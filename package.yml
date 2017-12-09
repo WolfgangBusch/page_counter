@@ -1,0 +1,15 @@
+package: page_counter
+version: '1.0.0'
+author: 'Wolfgang Busch'
+supportpage: redaxo.org/forum/
+
+page:
+    title: 'translate:page_counter'
+    perm: page_counter[]
+    subpages:
+        introduction: { title: 'translate:introduction' }
+        description:  { title: 'translate:description' }
+        handling:     { title: 'translate:handling' }
+
+requires:
+    redaxo: ^5.1.0
