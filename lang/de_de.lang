@@ -1,1 +1,5 @@
-
+# addon:page_counter
+page_count   = Aufrufzähler
+introduction = Einführung
+description  = Beschreibung
+handling     = Handhabung
