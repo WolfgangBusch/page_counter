@@ -5,6 +5,5 @@
  * @package redaxo5
  * @version Dezember 2017
  */
-echo rex_view::title(rex_i18n::msg($this->getPackageId()));
-rex_be_controller::includeCurrentPageSubPath();
+require_once __DIR__.'/../help.php';
 ?>
