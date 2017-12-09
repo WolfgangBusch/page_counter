@@ -25,7 +25,7 @@ Hochzählen im Seiten-Template vorgenommen werden. Der Beginn der
 Zählung ergibt sich aus dem Datum, an dem der Artikel angelegt wurde
 (Tabelle <tt>rex_article</tt>, Spalte <tt>createdate</tt>).</div>
 <br/>
-<div><b>Aufrufzählung bei ausgewählten Artikeln</b></div>
+<div><b>Aufrufzählung bei ausgewählten Artikeln:</b></div>
 <div style="padding-left:20px;">
 Dazu fügt man entsprechenden Artikeln den Zähler-Modul hinzu.
 Dessen Anlegedatum (Tabelle <tt>rex_article_slice</tt>, Spalte
