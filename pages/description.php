@@ -3,7 +3,7 @@
  * Aufrufzaehler Addon
  * @author wolfgang[at]busch-dettum[dot]de Wolfgang Busch
  * @package redaxo5
- * @version Dezember 2017
+ * @version Februar 2019
  */
 #
 # --- Beschreibung
@@ -13,33 +13,33 @@ $string='
 <tt>art_counter</tt> der Tabelle <tt>rex_article</tt> gespeichert. Sie
 wird bei der Installation angelegt, bei der De-Installation aber nicht
 wieder entfernt.<br/>
-Für die Zählung von Aufrufen auf ausgewählte Artikel wird ein
-Zähler-Modul zur Verfügung gestellt, der entsprechenden Artikeln
-hinzugefügt werden muss. Er wird bei der Installation angelegt, bei
+FÃ¼r die ZÃ¤hlung von Aufrufen auf ausgewÃ¤hlte Artikel wird ein
+ZÃ¤hler-Modul zur VerfÃ¼gung gestellt, der entsprechenden Artikeln
+hinzugefÃ¼gt werden muss. Er wird bei der Installation angelegt, bei
 der De-Installation aber nicht wieder entfernt.</div>
 <br/>
-<div><b>Aufrufzählung bei allen Artikeln:</b></div>
+<div><b>AufrufzÃ¤hlung bei allen Artikeln:</b></div>
 <div style="padding-left:20px;">
 Wird das AddOn zusammen mit Redaxo selbst installiert, kann das
-Hochzählen im Seiten-Template vorgenommen werden. Der Beginn der
-Zählung ergibt sich aus dem Datum, an dem der Artikel angelegt wurde
+HochzÃ¤hlen im Seiten-Template vorgenommen werden. Der Beginn der
+ZÃ¤hlung ergibt sich aus dem Datum, an dem der Artikel angelegt wurde
 (Tabelle <tt>rex_article</tt>, Spalte <tt>createdate</tt>).</div>
 <br/>
-<div><b>Aufrufzählung bei ausgewählten Artikeln:</b></div>
+<div><b>AufrufzÃ¤hlung bei ausgewÃ¤hlten Artikeln:</b></div>
 <div style="padding-left:20px;">
-Dazu fügt man entsprechenden Artikeln den Zähler-Modul hinzu.
+Dazu fÃ¼gt man entsprechenden Artikeln den ZÃ¤hler-Modul hinzu.
 Dessen Anlegedatum (Tabelle <tt>rex_article_slice</tt>, Spalte
-<tt>createdate</tt>) liefert den Beginn der Zählung.</div>
+<tt>createdate</tt>) liefert den Beginn der ZÃ¤hlung.</div>
 <br/>
-<div><b>Verfügbare statistische Daten:</b></div>
+<div><b>VerfÃ¼gbare statistische Daten:</b></div>
 <div <style="padding-left:20px;">
 <ul>
-    <li>Anzahl Aufrufe seit Beginn der Zählung</li>
-    <li>Datum des Beginns der Zählung</li>
-    <li>Anzahl Tage seit Beginn der Zählung (abgeleitet)</li>
+    <li>Anzahl Aufrufe seit Beginn der ZÃ¤hlung</li>
+    <li>Datum des Beginns der ZÃ¤hlung</li>
+    <li>Anzahl Tage seit Beginn der ZÃ¤hlung (abgeleitet)</li>
     <li>mittlere Anzahl Aufrufe pro Tag (abgeleitet, gerundet)</li>
 </ul>
 </div>
 ';
-echo utf8_encode($string);
+echo $string;
 ?>
