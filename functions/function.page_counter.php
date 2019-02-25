@@ -66,7 +66,8 @@ function counter_get($art_id,$clang_id) {
    $tr=intval($article[COUNTER]);
    if(intval($days)>0) $tr=$tr/$days;
    $arr=explode(',',$tr);
-   $ts=intval(substr($arr[1],0,1));
+   $ts=0;
+   if(!empty($arr[1])) $ts=intval(substr($arr[1],0,1));
    $daycount=intval($arr[0]);
    if($ts>=5) $daycount=$daycount+1;
    if($daycount<1) $daycount=1;   // unter 0.5 auf 1 aufrunden
