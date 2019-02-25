@@ -3,7 +3,7 @@
  * Aufrufzaehler Addon
  * @author wolfgang[at]busch-dettum[dot]de Wolfgang Busch
  * @package redaxo5
- * @version Dezember 2017
+ * @version Februar 2019
  */
 define("COUNTER","art_counter");    // Name der rex_article-Spalte
 #
@@ -32,25 +32,22 @@ if(!rex::isBackend()):            // Zaehler nur im Frontend
   counter_set($art_id,$clang_id);
   else:                           // Erfolgsmeldungen nur im Backend
   $anz=counter_get($art_id,$clang_id);
-  echo "<div><b>$anz[count]</b> Aufrufe &nbsp; ".
-     "(seit $anz[since], in $anz[days] Tagen &nbsp; - &nbsp; ".
-     "ca. $anz[daycount] Aufrufe pro Tag)</b></div>\\\n";
+  echo "<div><b>".$anz["count"]."</b> Aufrufe &nbsp; ".
+     "(seit ".$anz["since"].", in ".$anz["days"]." Tagen &nbsp;".
+     " - &nbsp; ca. ".$anz["daycount"]." Aufrufe pro Tag)</b></div>\n";
   endif;
 ?>';
-   return $string;
+   return str_replace("\\","\\\\",$string);
    }
 function counter_insert_counter_column() {
    #   Einfuegen der Aufrufzaehler-Spalte in rex_article, falls diese
    #   noch nicht vorhanden ist
    #
    $table="rex_article";
-   $sql=rex_sql::factory();
-   $sql->setTable($table);
-   $art=$sql->getArray("SELECT * FROM $table");
-   $keys=array_keys($art[0]);
+   $cols=rex_sql::showColumns($table,$DBID=1);
    $vorh=FALSE;
-   for($i=0;$i<count($keys);$i=$i+1) if($keys[$i]==COUNTER) $vorh=TRUE;
-   if(!$vorh) counter_sql_action($sql,"ALTER TABLE ".$table." ADD ".COUNTER." INT");
+   for($i=0;$i<count($cols);$i=$i+1) if($cols[$i]['name']==COUNTER) $vorh=TRUE;
+   if(!$vorh) counter_sql_action($sql,'ALTER TABLE '.$table.' ADD '.COUNTER.' INT');
    }
 function counter_insert_module($mypackage) {
    #   Erzeugen des Moduls zum Einfuegen des Aufrufzaehlers in einen Artikel
@@ -60,16 +57,16 @@ function counter_insert_module($mypackage) {
    # --- Modul-Inhalt (output)
    $out=counter_define_modul_out();
    $sql=rex_sql::factory();
-   $table="rex_module";
-   $modname=utf8_encode("Aufrufzähler (".$mypackage.")");
+   $table='rex_module';
+   $modname='AufrufzÃ¤hler ('.$mypackage.')';
    #
    # --- existiert der Modul schon?
    $query="SELECT * FROM ".$table." WHERE name LIKE '%".$mypackage."%'";
    $mod=$sql->getArray($query);
-   if(count($mod[0])>0):
+   if(!empty($mod)):
      #     existiert schon: update
      counter_sql_action($sql,"UPDATE ".$table." SET output='".$out."' ".
-        "WHERE id=".$mod[0][id]);
+        "WHERE id=".$mod[0]['id']);
      else:
      #     existiert nicht: insert
      counter_sql_action($sql,"INSERT INTO ".$table." (name,input,output) ".
