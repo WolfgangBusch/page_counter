@@ -1,6 +1,12 @@
 # page_counter
+<h4>Version 2.1.0</h4>
+<ul>
+    <li>Der gesamte Source-Code ist jetzt auf UTF-8 umgestellt.</li>
+    <li>SchlÃ¼ssel von neu definierten assoziativen Arrays werden jetzt als
+        Konstanten (in Apostrophs) behandelt.</li>
+</ul>
 <h4>Version 2.0.0</h4>
 <ul>
-    <li>Dieses AddOn steht auch für Redaxo 4 zur Verfügung, allerdings nur für
+    <li>Dieses AddOn steht auch fÃ¼r Redaxo 4 zur VerfÃ¼gung, allerdings nur fÃ¼r
         eine einsprachige Installation (Key: page_count)</li>
 </ul>
