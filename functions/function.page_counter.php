@@ -9,7 +9,7 @@ function counter_mod_id() {
    #   Rueckgabe der Modul-Id des Aufrufzaehler-Moduls
    #
    $sql=rex_sql::factory();
-   $query="SELECT * FROM rex_module WHERE output LIKE '%counter_set(\$art_id,%'";
+   $query='SELECT * FROM rex_module WHERE output LIKE \'%counter_set(\$art_id,%\'';
    $result=$sql->getArray($query);
    $modul=$result[0];
    return $modul['id'];
@@ -43,7 +43,7 @@ function counter_get($art_id,$clang_id) {
    #
    # --- Aufrufzaehlung seit (ALLE Artikelaufrufe per Seitentemplate gezaehlt)
    $date=$article['createdate'];   // Format (Redaxo 5): 2017-12-08 19:31:46
-   $date=strtotime($date);         // Wandlung in UNIX-Timestamp (Redaxo 4)
+   $date=strtotime($date);         // Wandlung in UNIX-Timestamp
    #
    # --- Aufrufzaehlung seit (nur Aufrufe von Artikeln mit Zaehlermodul gezaehlt)
    $query='SELECT * FROM rex_article_slice '.
@@ -53,7 +53,7 @@ function counter_get($art_id,$clang_id) {
    $slice=$result[0];
    if(count($slice)>0):
      $date=$slice['createdate'];   // Format (Redaxo 5): 2017-12-08 19:31:46
-     $date=strtotime($date);       // Wandlung in UNIX-Timestamp (Redaxo 4)
+     $date=strtotime($date);       // Wandlung in UNIX-Timestamp
      endif;
    #
    # --- Tagesdifferenz bis heute
@@ -159,13 +159,16 @@ function counter_out() {
    $arts=counter_collect();
    #
    echo '<h3 align="center">Aufrufzähler für ausgewählte Seiten</h3>';
+   $stn='style="white-space:nowrap;"';
+   $str='style="white-space:nowrap; text-align:right;"';
+   $stc='style="color:red; font-weight:bold;"';
    echo '<table cellpadding="1">
     <tr valign="bottom">
-        <th style="white-space:nowrap;text-align:left;"><u>Seite</u></th>
-        <th style="white-space:nowrap;text-align:right;">Anzahl<br/><u>insgesamt</u></th>
-        <th style="white-space:nowrap;text-align:right;">Aufrufe<br/><u>pro Tag</u></th>
-        <th style="padding-left:20px;white-space:nowrap;text-align:right;"><u>seit</u></th>
-        <th style="white-space:nowrap;width:80px;"> </th></tr>';
+        <td '.$stn.'><b><u>Seite</u></b></td>
+        <td '.$str.'><b>Anzahl<br/><u>insgesamt</u></b></td>
+        <td '.$str.'><b>Aufrufe<br/><u>pro Tag</u></b></td>
+        <td '.$str.'><b><u>seit</u></b></td>
+        <td> </td></tr>';
    for($i=1;$i<=count($arts);$i=$i+1):
       $art_id  =$arts[$i]['id'];
       $clang_id=$arts[$i]['clang_id'];
@@ -173,17 +176,19 @@ function counter_out() {
       $since   =$arts[$i]['since'];
       $days    =$arts[$i]['days'];
       $daycount=$arts[$i]['daycount'];
+      $count   =number_format($count,   0,',','.');
+      $daycount=number_format($daycount,0,',','.');
+      $days    =number_format($days,    0,',','.');
       $clang='';
       if($clang_id>1) $clang=' ('.rex_clang::get($clang_id)->getCode().')';
       $url=rex_getUrl($art_id,$clang_id);
-      $str='<a href="'.$url.'" target="_blank">'.$url.'</a>'.$clang;
+      $string='<a href="'.$url.'" target="_blank">'.$url.'</a>'.$clang;
       echo '
-    <tr><td style="white-space:nowrap;">'.$str.':</td>
-        <td style="white-space:nowrap;text-align:right;color:red;font-weight:bold;">'.$count.'</td>
-        <td style="white-space:nowrap;text-align:right;">&sim;
-            <span style="color:red;font-weight:bold;">'.$daycount.'</span></td>
-        <td style="padding-left:20px;white-space:nowrap;text-align:right;font-family:monospace;">'.$since.'</td>
-        <td style="white-space:nowrap;text-align:right;font-size:smaller;">('.$days.' Tage)</td></tr>';
+    <tr><td '.$stn.'>'.$string.':</td>
+        <td '.$str.'><span '.$stc.'>'.$count.'</span></td>
+        <td '.$str.'>&sim; <span '.$stc.'>'.$daycount.'</span></td>
+        <td '.$str.'><tt> &nbsp; '.$since.'</tt></td>
+        <td '.$str.'> &nbsp; <small>('.$days.' Tage)</small></td></tr>';
       endfor;
    echo '</table>';
    }
