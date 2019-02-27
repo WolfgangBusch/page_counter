@@ -15,7 +15,10 @@ function counter_insert_counter_column() {
    $cols=rex_sql::showColumns($table,$DBID=1);
    $vorh=FALSE;
    for($i=0;$i<count($cols);$i=$i+1) if($cols[$i]['name']==COUNTER) $vorh=TRUE;
-   if(!$vorh) counter_sql_action($sql,'ALTER TABLE '.$table.' ADD '.COUNTER.' INT');
+   if(!$vorh):
+     $sql=rex_sql::factory();
+     counter_sql_action($sql,'ALTER TABLE '.$table.' ADD '.COUNTER.' INT');
+     endif;
    }
 function counter_sql_action($sql,$query) {
    #   Ausfuehrung einer SQL-Aktion mittels setQuery()
