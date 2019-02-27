@@ -9,4 +9,3 @@
     <li>Dieses AddOn steht auch für Redaxo 4 zur Verfügung, allerdings nur für
         eine einsprachige Installation (Key: page_count)</li>
 </ul>
-error_reporting(E_ALL);
