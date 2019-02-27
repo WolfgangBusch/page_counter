@@ -84,7 +84,7 @@ function counter_insert_module($mypackage) {
      else:
      #     existiert nicht: insert
      counter_sql_action($sql,'INSERT INTO '.$table.' (name,input,output) '.
-        'VALUES (\''.$modname.'\',\''.$in,'\',\''.$out.'\')');
+        'VALUES (\''.$modname.'\',\''.$in.'\',\''.$out.'\')');
      endif;
    }
 ?>
