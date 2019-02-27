@@ -5,38 +5,35 @@
  * @package redaxo5
  * @version Februar 2019
  */
-#
-# --- Funktionen
+$stx='style="padding-left:20px;"';
 $string='
 <div><b>Der Zähler-Modul nutzt die beiden folgenden PHP-Funktionen:
 </b></div>
-<div style="padding-left:15px;">
-<code>function counter_get($art_id,$clang_id)</code></div>
-<div style="padding-left:40px;">
-Gibt alle benötigten Daten für die Aufrufstatistik zur Sprachversion
-eines Artikels als assoziatives Array zurück (Startdatum der Zählung,
-Anzahl der Aufrufe, Anzahl Tage seit dem Startdatum, Anzahl der
-Aufrufe pro Tag) in demselben Format wie die Funktion
+<div '.$stx.'>
+<code>function counter_get($art_id,$clang_id)</code>
+<div '.$stx.'>Gibt alle benötigten Daten für die Aufrufstatistik zur
+Sprachversion eines Artikels als assoziatives Array zurück (Startdatum
+der Zählung, Anzahl der Aufrufe, Anzahl Tage seit dem Startdatum,
+Anzahl der Aufrufe pro Tag) in demselben Format wie die Funktion
 <tt>counter_collect()</tt> (vergl. unten).</div>
-<div style="padding-left:15px;">
-<code>function counter_set($art_id,$clang_id)</code></div>
-<div style="padding-left:40px;">
+<code>function counter_set($art_id,$clang_id)</code>
+<div style="padding-left:20px;">
 Erhöht die Anzahl der Aufrufe auf die Sprachversion eines Artikels
 um 1 (nur im Frontend-Zweig). Die Funktion ist im Zähler-Modul
 enthalten. Für den vorherigen Stand der Zählung wird die Funktion
-<tt>counter_get($art_id,$clang_id)</tt> aufgerufen.</div>
-<br/>
+<tt>counter_get(...)</tt> (vergl. oben) aufgerufen.</div>
+</div>
+
 <div><b>Die folgenden PHP-Funktionen können dazu benutzt werden,
 Aufrufstatistiken zu erstellen und auszugeben:</b></div>
-<div style="padding-left:15px;">
-<code>function counter_collect()</code></div>
-<div style="padding-left:40px;">
-Gibt die unten aufgelisteten Daten zu allen Artikeln zurück, die
-mit dem Aufrufzähler-Modul versehenen sind (als nummeriertes Array,
-Nummerierung beginnend bei 1). Jedes Array-Element ist selbst ein
-assoziatives Array mit diesen Elementen:
-<div style="padding-left:20px;">
-<table>
+<div '.$stx.'>
+<code>function counter_collect()</code>
+<div '.$stx.'>Gibt zu allen Artikeln, die mit dem Aufrufzähler-Modul
+versehenen sind, die unten aufgeführten Daten zurück (als nummeriertes
+Array, Nummerierung beginnend bei 1). Jedes Array-Element ist selbst
+ein assoziatives Array mit diesen Elementen:
+<div '.$stx.'>
+<table style="background-color:inherit;">
     <tr><td>[\'id\']</td>
         <td>Id des Artikels</td></tr>
     <tr><td>[\'clang_id\']</td>
@@ -53,13 +50,14 @@ assoziatives Array mit diesen Elementen:
 </table>
 </div>
 </div>
-<div style="padding-left:15px;">
-<code>function counter_out()</code></div>
-<div style="padding-left:40px;">
-Gibt exemplarisch alle verfügbaren aktuellen Aufrufzahlen tabellarisch
-aus, basierend auf der Funktion <tt>counter_collect()</tt>. Für die
-Bereitstellung anderer Ausgabeformate kann der Quellcode der Funktion
-als Vorlage benutzt werden.</div>
+</div>
+<div '.$stx.'>
+<code>function counter_out()</code>
+<div '.$stx.'>Gibt exemplarisch alle verfügbaren aktuellen Aufrufzahlen
+tabellarisch aus, basierend auf der Funktion <tt>counter_collect()</tt>.
+Der Quellcode der Funktion kann auch als Vorlage für die Bereitstellung
+anderer Ausgabeformate benutzt werden.</div>
+</div>
 ';
 echo $string;
 ?>
