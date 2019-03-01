@@ -1,4 +1,8 @@
 # page_counter
+<h4>Version 1.2.0</h4>
+<ul>
+    <li>Die Installation des Moduls ist überarbeitet und systematisiert.</li>
+</ul>
 <h4>Version 1.1.0</h4>
 <ul>
     <li>Der gesamte Source-Code ist jetzt auf UTF-8 umgestellt.</li>
