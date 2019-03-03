@@ -1,1 +1,6 @@
-
+/*   p a g e _ c o u n t e r   */
+.counter_table  { padding:1px; background-color:inherit; }
+.counter_nowrap { white-space:nowrap; }
+.counter_right  { white-space:nowrap; text-align:right; }
+.counter_red    { color:red; font-weight:bold; }
+.counter_indent { padding-left:20px; }
