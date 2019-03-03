@@ -3,36 +3,35 @@
  * Aufrufzaehler Addon
  * @author wolfgang[at]busch-dettum[dot]de Wolfgang Busch
  * @package redaxo5
- * @version Februar 2019
+ * @version März 2019
  */
-$stx='style="padding-left:20px;"';
-$string='
-<div><b>Der Zähler-Modul nutzt die beiden folgenden PHP-Funktionen:
+$myaddon=$this->getPackageId();
+echo '<div><b>Der Zähler-Modul nutzt die beiden folgenden PHP-Funktionen:
 </b></div>
-<div '.$stx.'>
-<code>function counter_get($art_id,$clang_id)</code>
-<div '.$stx.'>Gibt alle benötigten Daten für die Aufrufstatistik zur
+<div class="counter_indent">
+<code>'.$myaddon.'::counter_get($art_id,$clang_id)</code>
+<div class="counter_indent">Gibt alle benötigten Daten für die Aufrufstatistik zur
 Sprachversion eines Artikels als assoziatives Array zurück (Startdatum
 der Zählung, Anzahl der Aufrufe, Anzahl Tage seit dem Startdatum,
 Anzahl der Aufrufe pro Tag) in demselben Format wie die Funktion
-<tt>counter_collect()</tt> (vergl. unten).</div>
-<code>function counter_set($art_id,$clang_id)</code>
+<tt>'.$myaddon.'::counter_collect</tt> (vergl. unten).</div>
+<code>'.$myaddon.'::counter_set($art_id,$clang_id)</code>
 <div style="padding-left:20px;">
 Erhöht die Anzahl der Aufrufe auf die Sprachversion eines Artikels
 um 1 (nur im Frontend-Zweig). Die Funktion ist im Zähler-Modul
 enthalten. Für den vorherigen Stand der Zählung wird die Funktion
-<tt>counter_get(...)</tt> (vergl. oben) aufgerufen.</div>
+<tt>'.$myaddon.'::counter_get</tt> (vergl. oben) aufgerufen.</div>
 </div>
-
+<br/>
 <div><b>Die folgenden PHP-Funktionen können dazu benutzt werden,
 Aufrufstatistiken zu erstellen und auszugeben:</b></div>
-<div '.$stx.'>
-<code>function counter_collect()</code>
-<div '.$stx.'>Gibt zu allen Artikeln, die mit dem Aufrufzähler-Modul
+<div class="counter_indent">
+<code>'.$myaddon.'::counter_collect()</code>
+<div class="counter_indent">Gibt zu allen Artikeln, die mit dem Aufrufzähler-Modul
 versehenen sind, die unten aufgeführten Daten zurück (als nummeriertes
 Array, Nummerierung beginnend bei 1). Jedes Array-Element ist selbst
 ein assoziatives Array mit diesen Elementen:
-<div '.$stx.'>
+<div class="counter_indent">
 <table style="background-color:inherit;">
     <tr><td>[\'id\']</td>
         <td>Id des Artikels</td></tr>
@@ -51,13 +50,11 @@ ein assoziatives Array mit diesen Elementen:
 </div>
 </div>
 </div>
-<div '.$stx.'>
-<code>function counter_out()</code>
-<div '.$stx.'>Gibt exemplarisch alle verfügbaren aktuellen Aufrufzahlen
-tabellarisch aus, basierend auf der Funktion <tt>counter_collect()</tt>.
+<div class="counter_indent">
+<code>'.$myaddon.'::counter_out()</code>
+<div class="counter_indent">Gibt exemplarisch alle verfügbaren aktuellen Aufrufzahlen
+tabellarisch aus, basierend auf der Funktion <tt>'.$myaddon.'::counter_collect()</tt>.
 Der Quellcode der Funktion kann auch als Vorlage für die Bereitstellung
 anderer Ausgabeformate benutzt werden.</div>
-</div>
-';
-echo $string;
+</div>';
 ?>
