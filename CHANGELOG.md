@@ -1,6 +1,14 @@
 # page_counter
 <h4>Version 1.2.0</h4>
 <ul>
+    <li>Die Counter-Funktionen sind jetzt in einer Klasse zusammengefasst.<br/>
+        ***: Falls der Aufrufzähler im Seiten-Template angelegt ist,
+        muss der Aufruf von counter_set entsprechend angepasst werden:</li>
+    <li>Für die Formatierung der exemplarischen Ausgaben des Aufrufzählers
+        ist eine Stylesheet-Datei eingefügt.</li>
+</ul>
+<h4>Version 1.2.0</h4>
+<ul>
     <li>Die Installation des Moduls ist überarbeitet und systematisiert.</li>
 </ul>
 <h4>Version 1.1.0</h4>

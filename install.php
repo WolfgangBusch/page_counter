@@ -3,11 +3,11 @@
  * Aufrufzaehler Addon
  * @author wolfgang[at]busch-dettum[dot]de Wolfgang Busch
  * @package redaxo5
- * @version Februar 2019
+ * @version März 2019
  */
-require_once __DIR__.'/functions/function.install.php';
+require_once __DIR__.'/lib/class.page_counter_install.php';
 #
 # --- Einfuegen der Aufrufzaehler-Spalte in rex_article, Erzeugen des Zaehler-Moduls
-counter_insert_counter_column();
-counter_build_module($this->getPackageId());
+page_counter_install::counter_insert_counter_column();
+page_counter_install::counter_build_module($this->getPackageId());
 ?>
