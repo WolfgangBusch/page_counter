@@ -3,7 +3,7 @@
 <ul>
     <li>Die Counter-Funktionen sind jetzt in einer Klasse zusammengefasst.<br/>
         ***: Falls der Aufrufzähler im Seiten-Template angelegt ist,
-        muss der Aufruf von counter_set entsprechend angepasst werden:</li>
+        muss der Aufruf von counter_set entsprechend angepasst werden.</li>
     <li>Für die Formatierung der exemplarischen Ausgaben des Aufrufzählers
         ist eine Stylesheet-Datei eingefügt.</li>
 </ul>
