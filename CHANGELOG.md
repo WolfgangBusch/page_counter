@@ -2,8 +2,8 @@
 <h4>Version 1.3.0</h4>
 <ul>
     <li>Die Counter-Funktionen sind jetzt in einer Klasse zusammengefasst.<br/>
-        ***: Falls der Aufrufzähler im Seiten-Template angelegt ist,
-        muss der Aufruf von counter_set entsprechend angepasst werden.</li>
+        *** Falls der Aufrufzähler im Seiten-Template angelegt ist, muss
+        der Aufruf von <tt>counter_set</tt> entsprechend angepasst werden. ***</li>
     <li>Für die Formatierung der exemplarischen Ausgaben des Aufrufzählers
         ist eine Stylesheet-Datei eingefügt.</li>
 </ul>
