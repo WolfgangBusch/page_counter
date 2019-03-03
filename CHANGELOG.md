@@ -1,5 +1,5 @@
 # page_counter
-<h4>Version 1.2.0</h4>
+<h4>Version 1.3.0</h4>
 <ul>
     <li>Die Counter-Funktionen sind jetzt in einer Klasse zusammengefasst.<br/>
         ***: Falls der Aufrufzähler im Seiten-Template angelegt ist,
