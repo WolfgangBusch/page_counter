@@ -1,13 +1,13 @@
 <?php
-/**
+/*
  * Aufrufzaehler Addon
  * @author wolfgang[at]busch-dettum[dot]de Wolfgang Busch
  * @package redaxo5
- * @version März 2019
+ * @version Februar 2023
  */
 echo '<div><b>Einbindung in Redaxo:</b></div>
 <div class="counter_indent">Die Aufrufanzahl wird in der Spalte 
-<code>art_counter</code> der Tabelle <code>rex_article</code>
+<code>'.page_counter::COUNTER.'</code> der Tabelle <code>rex_article</code>
 gespeichert. Sie wird bei der Installation angelegt, bei der
 De-Installation aber nicht wieder entfernt.<br/>
 Für die Zählung von Aufrufen auf ausgewählte Artikel wird ein
@@ -26,7 +26,7 @@ Spalte <code>createdate</code>).</div>
 <div class="counter_indent">Dazu fügt man entsprechenden Artikeln
 den Zähler-Modul hinzu. Dessen Anlegedatum (Tabelle
 <code>rex_article_slice</code>, Spalte <code>createdate</code>)
-liefert den Beginn der Zählung.</div>
+definiert den Beginn der Zählung.</div>
 <br/>
 <div><b>Das AddOn liefert diese Daten:</b></div>
 <div class="counter_indent">

@@ -1,9 +1,10 @@
 <?php
-/**
+/*
  * Aufrufzaehler Addon
  * @author wolfgang[at]busch-dettum[dot]de Wolfgang Busch
  * @package redaxo5
- * @version März 2019
+ * @version Februar 2023
  */
-require_once __DIR__.'/../help.php';
+$intro=file_get_contents(__DIR__.'/../README.md');
+echo substr($intro,strpos($intro,'<div>'));
 ?>
