@@ -1,4 +1,12 @@
 # page_counter
+<h4>Version 1.3.1</h4>
+<ul>
+    <li>Mit PHP Vers. 8 trat ein Fehler auf (... count(null) ...), der jetzt
+        abgefangen ist.</li>
+    <li>Die globale Variable COUNTER ist ersetzt durch eine Klassenkonstante.</li>
+    <li>Die Beschreibung ist überarbeitet.</li>
+    </li>
+</ul>
 <h4>Version 1.3.0</h4>
 <ul>
     <li>Die Counter-Funktionen sind jetzt in einer Klasse zusammengefasst.<br/>
