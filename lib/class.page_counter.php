@@ -1,11 +1,13 @@
 <?php
-/**
+/*
  * Aufrufzaehler Addon
  * @author wolfgang[at]busch-dettum[dot]de Wolfgang Busch
  * @package redaxo5
- * @version März 2019
+ * @version Februar 2023
  */
 class page_counter {
+#
+const COUNTER='art_counter';    // Name der rex_article-Spalte
 #
 public static function counter_mod_id() {
    #   Rueckgabe der Modul-Id des Aufrufzaehler-Moduls
@@ -35,8 +37,7 @@ public static function counter_get($art_id,$clang_id) {
    #   benutzte functions:
    #      self::counter_mod_id();
    #
-   $modtyp=self::counter_mod_id();         // Id des Aufrufzaehler-Moduls
-   #
+   $modtyp=self::counter_mod_id();   // Id des Aufrufzaehler-Moduls
    $sql=rex_sql::factory();
    #
    # --- Artikel heraussuchen
@@ -45,18 +46,16 @@ public static function counter_get($art_id,$clang_id) {
    $article=$result[0];
    #
    # --- Aufrufzaehlung seit (ALLE Artikelaufrufe per Seitentemplate gezaehlt)
-   $date=$article['createdate'];   // Format (Redaxo 5): 2017-12-08 19:31:46
-   $date=strtotime($date);         // Wandlung in UNIX-Timestamp
+   $date=$article['createdate'];     // Format (Redaxo 5): 2017-12-08 19:31:46
+   $date=strtotime($date);           // Wandlung in UNIX-Timestamp
    #
    # --- Aufrufzaehlung seit (nur Aufrufe von Artikeln mit Zaehlermodul gezaehlt)
    $query='SELECT * FROM rex_article_slice '.
       'WHERE article_id='.$art_id.' AND module_id='.$modtyp;
    $result=$sql->getArray($query);
-   #
-   $slice=$result[0];
-   if(count($slice)>0):
-     $date=$slice['createdate'];   // Format (Redaxo 5): 2017-12-08 19:31:46
-     $date=strtotime($date);       // Wandlung in UNIX-Timestamp
+   if(!empty($result[0])):
+     $date=$result[0]['createdate']; // Format (Redaxo 5): 2017-12-08 19:31:46
+     $date=strtotime($date);         // Wandlung in UNIX-Timestamp
      endif;
    #
    # --- Tagesdifferenz bis heute
@@ -66,17 +65,17 @@ public static function counter_get($art_id,$clang_id) {
    if($diff-$days>0.5) $days=$days+1;
    #
    # --- mittlere Aufrufe/Tag (ggf. aufrunden)
-   $tr=intval($article[COUNTER]);
+   $tr=intval($article[self::COUNTER]);
    if(intval($days)>0) $tr=$tr/$days;
    $arr=explode(',',$tr);
    $ts=0;
    if(!empty($arr[1])) $ts=intval(substr($arr[1],0,1));
    $daycount=intval($arr[0]);
    if($ts>=5) $daycount=$daycount+1;
-   if($daycount<1) $daycount=1;   // unter 0.5 auf 1 aufrunden
+   if($daycount<1) $daycount=1;      // unter 0.5 auf 1 aufrunden
    #
    # --- Rueckgabe-Parameter
-   $count['count']   =intval($article[COUNTER]);
+   $count['count']   =intval($article[self::COUNTER]);
    $count['since']   =date('j.n.Y',$date);
    $count['days']    =$days;
    $count['daycount']=$daycount;
@@ -86,12 +85,11 @@ public static function counter_set($art_id,$clang_id) {
    #   Erhoehung der Anzahl Aufrufe auf eine Seite
    #   (wird nur im Frontend durchgefuehrt)
    #   Die Anzahl der Aufrufe einer Seite ist gespeichert in der
-   #   Spalte 'art_counter' der Tabelle 'rex_article'
+   #   Spalte self::COUNTER der Tabelle 'rex_article'
    #   $art_id             Id der betreffenden Seite
    #   $clang_id           Sprach-Id der betreffenden Seite
    #   benutze functions:
    #      self::counter_get($art_id,$clang_id);
-   #      page_counter_install::counter_sql_action($sql,$action)
    #
    $res=FALSE;
    if(!rex::isBackend()):
@@ -103,21 +101,23 @@ public static function counter_set($art_id,$clang_id) {
      $anz=$anz+1;
      $sql=rex_sql::factory();
      $table='rex_article';
-     page_counter_install::counter_sql_action($sql,'UPDATE '.$table.
-        ' SET '.COUNTER.'='.$anz.' WHERE id='.$art_id.' AND clang_id='.$clang_id);
+     $where ='id='.$art_id.' AND clang_id='.$clang_id;
+     $update='UPDATE '.$table.' SET '.self::COUNTER.'='.$anz.' WHERE '.$where;
+     $sql->setQuery($update);
      endif;
    }
 public static function counter_get_articles_of_module($id) {
-   #   Rueckgabe der Ids und der Sprach-Ids von Artikeln, die einen
-   #   gegebenen Modul enthalten, in Form eines nummerierten Arrays
-   #   (Nummerierung beginnend bei 1), wobei jedes Array-Element aus
-   #   einem Array besteht: [0]=>article_id, [1]=>clang_id
+   #   Rueckgabe der Ids und der Sprach-Ids von Artikeln, die einen gegebenen
+   #   Modul enthalten, in Form eines nummerierten Arrays (Nummerierung ab 1),
+   #   wobei jedes Array-Element aus einem nummerierten Array besteht
+   #   ([0]=>article_id, [1]=>clang_id).
    #   $id                 Id des betreffenden Moduls
    #
    # --- alle Artikel-Slices heraussuchen, deren modul_typ = der Modul-Id sind
-   #      ein Artikel-Slice enthaelt die Id des zugehoerigen Artikels
+   #     ein Artikel-Slice enthaelt die Id des zugehoerigen Artikels
    $sql=rex_sql::factory();
    $rows=$sql->getArray('SELECT * FROM rex_article_slice WHERE module_id='.$id);
+   $arts=array();
    for($i=0;$i<count($rows);$i=$i+1)
       $arts[$i+1]=array($rows[$i]['article_id'],$rows[$i]['clang_id']);
    return $arts;
