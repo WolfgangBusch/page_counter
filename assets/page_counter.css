@@ -4,3 +4,5 @@
 .counter_right  { white-space:nowrap; text-align:right; }
 .counter_red    { color:red; font-weight:bold; }
 .counter_indent { padding-left:20px; }
+.counter_box    { border:solid 1px silver; background-color:white; }
+.counter_inpwid { width:5em; }
