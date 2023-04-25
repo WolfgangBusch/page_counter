@@ -1,4 +1,20 @@
 # page_counter
+<h4>Version 1.4</h4>
+<ul>
+    <li>Die function counter_set($art_id,$clang_id) ist ersetzt durch
+        die function set_counter(). ***Der entsprechende Aufruf im
+        Seiten-Template muss mit der Übernahme dieser AddOn-Version
+        korrigiert werden!***</li>
+    <li>Es kann jetzt eine Mindestanzahl von Aufrufen angegeben werden,
+        die ein Artikel haben muss, um in der Aufrufstatistik zu
+        erscheinen. Außerdem kann die Aufrufstatistik jetzt auf einzelne
+        Sprachversionen beschränkt werden.</li>
+    <li>Der AddOn-Modul dient jetzt nicht nur zur Aktivierung der
+        Aufrufzählung einzelner Artikel. Er kann wahlweise auch zur
+        Ausgabe der Aufrufstatistik benutzt werden.</li>
+    <li>Die Aufrufzählung wird jetzt sauber gemäß Sprachversion des
+        Artikels durchgeführt.</li>
+</ul>
 <h4>Version 1.3.1</h4>
 <ul>
     <li>Mit PHP Vers. 8 trat ein Fehler auf (... count(null) ...), der jetzt
