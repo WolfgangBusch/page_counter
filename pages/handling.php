@@ -3,73 +3,119 @@
  * Aufrufzaehler Addon
  * @author wolfgang[at]busch-dettum[dot]de Wolfgang Busch
  * @package redaxo5
- * @version Februar 2023
+ * @version April 2023
  */
-$myaddon=$this->getPackageId();
-echo '<div><b>Zähler-Modul:</b></div>
+$addon=$this->getPackageId();
+echo '
+<div><b>Der AddOn-Modul:</b></div>
 <div class="counter_indent">
-Im <b>Backend</b> wird eine Kurzfassung der gesammelten Zählerdaten für den
-Artikel (in der jeweiligen Sprachversion) angezeigt: Startdatum der Zählung,
-Anzahl der Aufrufe, Anzahl Tage seit dem Startdatum, Anzahl der Aufrufe pro
-Tag. Sie werden von der folgenden Funktion zurück gegeben:
-   <div class="counter_indent">
-   <code>$data = '.$myaddon.'::counter_get($art_id,$clang_id);</code></div>
-</div>
+Das AddOn richtet einen Modul ein, der wahlweise eingesetzt werden
+kann
+<ul style="margin:0;">
+    <li>für die Einrichtung eines Zählerblocks in einem Artikel
+        (zeigt außerdem im Backend den aktuellen Zählerstand für den
+        Artikel an) oder</li>
+    <li>für die Ausgabe der Aufruf-Hitliste (nur im Frontend)</li>
+</ul>
+Dieser Modul wird bei der De-Installation nicht wieder entfernt.
+Welche Funktion der Block wahrnehmen soll, wird durch den Wert
+eines Input-Feldes entschieden.</div>
+
+<div><br><b>Zählerfunktion im Seiten-Template:</b></div>
 <div class="counter_indent">
-Im <b>Frontend</b> erhöht der Aufruf der folgenden Funktion den Zähler
-für die jeweilige Sprachversion um 1:
-   <div class="counter_indent">
-   <code>'.$myaddon.'::counter_set($art_id,$clang_id);</code></div>
+Wenn grundsätzlich jeder Aufruf jedes Artikels mitgezählt werden
+soll, muss ein Aufruf der Zählerfunktion <tt>set_counter()</tt>
+als PHP-Code in das Seiten-Template eingefügt werden.
+Eine geeignete Stelle dafür ist z.B. die erste Zeile im Template,
+die dann so lautet:
+<div class="counter_indent">
+<code>&lt;?php '.$addon.'::set_counter(); ?&gt;</code></div>
 </div>
 
-<br>
-<div><b>Zähler im Seiten-Template:</b></div>
+<div><br><b>Aufruf-Hitliste:</b></div>
 <div class="counter_indent">
-Wenn grundsätzlich jeder Aufruf jedes Artikels mitgezählt werden soll,
-muss nur die PHP-Zeile
-   <div class="counter_indent">
-   <code>'.$myaddon.'::counter_set($art_id,$clang_id);</code></div>
-im Seiten-Template eingefügt werden.
-</div>
+Der AddOn-Modul gibt die aktuelle Aufruf-Hitliste im Frontend aus,
+wenn im Input-Feld für die Mindestanzahl von Aufrufen ein positiver
+Wert eingegeben wird. Dabei können Artikel verschiedener Sprachen
+wahlweise getrennt oder zusammen aufgelistet werden. Die Darstellung
+der Hitliste ist fest formatiert. Für eine eigene Gestaltung können
+die folgenden Hinweise benutzt werden.</div>
 
-<br>
-<div><b>AddOn-Funktionen für Aufrufstatistiken:</b></div>
+<div><br><b>Individuelle Gestaltung der Aufruf-Hitliste:</b></div>
 <div class="counter_indent">
-<code>$data = '.$myaddon.'::counter_collect();</code>
-   <div class="counter_indent">
-   Gibt zu allen Artikeln, die mit dem Aufrufzähler-Modul versehen sind,
-   die unten aufgeführten Daten zurück (als nummeriertes Array,
-   Nummerierung ab 1). Jedes Array-Element ist selbst ein assoziatives
-   Array:
-      <div class="counter_indent">
-      <table class="counter_table">
-          <tr><td>S c h l ü s s e l</td>
-              <td class="counter_indent">W e r t</td></tr>
-          <tr><td><tt>[\'id\']</tt></td>
-              <td class="counter_indent">Id des Artikels</td></tr>
-          <tr><td><tt>[\'clang_id\']</tt></td>
-              <td class="counter_indent">Sprach-Id des Artikels</td></tr>
-          <tr><td><tt>[\'since\']</tt></td>
-              <td class="counter_indent">Datum des Beginns der Zählung
-                  <tt>(tt.mm.jjjj)</tt></td></tr>
-          <tr><td><tt>[\'count\']</tt></td>
-              <td class="counter_indent">Anzahl der Aufrufe</td></tr>
-          <tr><td><tt>[\'days\']</tt></td>
-              <td class="counter_indent">Anzahl Tage seit Einrichtung des
-                  Artikels bzw. Einfügen des Zähler-Moduls</td></tr>
-          <tr><td><tt>[\'daycount\']</tt></td>
-              <td class="counter_indent">durchschnittliche Anzahl der
-                  Aufrufe pro Tag (gerundet)</td></tr>
-      </table></div>
+Dazu muss die AddOn-Funktion <code>'.$addon.'::counter_out($min,$clang_id)</code>
+angepasst werden.
+    <table class="counter_table">
+        <tr valign="top">
+            <td><code>$min</code></td>
+            <td class="counter_indent">
+                Mindestanzahl der bisher erfolgten Aufrufe, Artikel
+                mit weniger Aufrufen werden nicht ausgegeben
+                (= Wert des Input-Feldes im Modul)</td></tr>
+        <tr valign="top">
+            <td><code>$clang_id</code></td>
+            <td class="counter_indent">
+                Sprach-Id (= Wert des Select-Menüs im Modul)<br>
+                &gt;0: nur Artikel dieser Sprache werden aufgelistet<br>
+                &le;0: Artikel aller Sprachen werden aufgelistet</td></tr>
+    </table>
+    Die Funktion bezieht die gespeicherten Zählerdaten über den Aufruf<br>
+    <code>$data = '.$addon.'::counter_collect($min,$clang_id);</code> und
+    formatiert die Hitliste als HTML-Tabelle.
+    <table class="counter_table">
+        <tr valign="top">
+            <td><code>$data</code></td>
+            <td class="counter_indent" colspan="2">
+                Nummeriertes Array der Zählerdaten der Artikel
+                (Nummerierung ab 1). Das Array ist <b>nach Aufrufanzahl
+                sortiert</b>. Jedes Array-Element ist selbst ein
+                assoziatives Array:</td></tr>
+        <tr valign="top">
+            <td></td>
+            <td class="counter_indent" width="1">
+                <u>Schlüssel</u></td>
+            <td class="counter_indent">
+                <u>Wert</u></td></tr>
+        <tr valign="top">
+            <td></td>
+            <td class="counter_indent" width="1">
+                <tt>[\'id\']</tt></td>
+            <td class="counter_indent">
+                Id des Artikels</td></tr>
+        <tr valign="top">
+            <td></td>
+            <td class="counter_indent" width="1">
+                <tt>[\'clang_id\']</tt></td>
+            <td class="counter_indent">
+                Sprach-Id des Artikels</td></tr>
+        <tr valign="top">
+            <td></td>
+            <td class="counter_indent" width="1">
+                <tt>[\'since\']</tt></td>
+            <td class="counter_indent">
+                Datum des Beginns der Zählung
+                <tt>(tt.mm.jjjj)</tt></td></tr>
+        <tr valign="top">
+            <td></td>
+            <td class="counter_indent" width="1">
+                <tt>[\'count\']</tt></td>
+            <td class="counter_indent">
+                Anzahl der Aufrufe</td></tr>
+        <tr valign="top">
+            <td></td>
+            <td class="counter_indent" width="1">
+                <tt>[\'days\']</tt></td>
+            <td class="counter_indent">
+                Anzahl Tage seit Einrichtung des Artikels bzw.
+                Einfügen des Zähler-Moduls</td></tr>
+        <tr valign="top">
+            <td></td>
+            <td class="counter_indent" width="1">
+                <tt>[\'daycount\']</tt></td>
+            <td class="counter_indent">
+                durchschnittliche Anzahl der Aufrufe pro Tag
+                (gerundet)</td></tr>
+      </table>
    </div>
-</div>
-<div class="counter_indent">
-<code>'.$myaddon.'::counter_out();</code>
-   <div class="counter_indent">
-   Diese Funktion liefert exemplarisch eine Auswertung in Form einer
-   tabellarischen Ausgabe aller verfügbaren aktuellen Aufrufzahlen. Sie
-   basiert auf der vorherigen Funktion und ist nur im Falle der Zählung
-   von Aufrufen ausgewählter Seiten nutzbar. Ihr Quellcode kann auch als
-   Vorlage für die Bereitstellung anderer Ausgabeformate dienen.</div>
-</div>';
+<br>&nbsp;</div>';
 ?>
