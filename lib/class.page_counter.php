@@ -15,13 +15,14 @@ class page_counter {
 #      counter_collect($min,$clang_id)
 #      counter_out($min,$clang_id)
 #   Modul und Beispiel
+#      select_menue($min,$clang_id)
 #      modul_inp($min,$clang_id)
 #      modul_outp($min,$clang_id)
 #      counter_page()
 #   Installation
 #      insert_counter_column()
-#      define_module($mypackage)
-#      build_module($mypackage)
+#      define_module($package)
+#      build_module($package)
 #
 # -------------------- Konstanten
 const COUNTER='art_counter';    // Name der rex_article-Spalte
@@ -149,8 +150,8 @@ public static function counter_collect($min,$clang_id) {
    #              ['days']     = Anzahl Tage seit Einrichtung der Seite/des Zaehler-Moduls
    #              ['daycount'] = Anzahl der Aufrufe pro Tag
    #   Das Array ist nach der Aufrufanzahl (absteigend) sortiert.
-   #   $min                Mindestanzahl der bisher erfolgten Aufrufe (Artikel
-   #                       mit weniger Aufrufen werden nicht erfasst)
+   #   $min                Mindestanzahl der bisher erfolgten Aufrufe
+   #                       (Artikel mit weniger Aufrufen werden nicht erfasst)
    #   $clang_id           >0:  nur Artikel dieser Sprache
    #                       <=0: Artikel aller Sprachen
    #   benutzte functions:
@@ -249,35 +250,25 @@ public static function counter_out($min,$clang_id) {
    }
 #
 # -------------------- Modul und Beispiel
-public static function modul_inp($min,$clang_id) {
-   #   Rueckgabe des PHP-Codes fuer den Input-Teil des Moduls.
-   #   $min                = REX_VALUE[1]: minimale Aufrufzahl,
-   #                       ab der ein Artikel in der Aufrufstatistik erscheint
-   #   $clang_id           = REX_VALUE[2]: Sprach-Id der auszugebenden Artikel
+public static function select_menue($min,$clang_id) {
+   #   Rueckgabe des Menues zur Gestaltung der Aufruf-Hitliste.
+   #   $min                REX_VALUE[1], Mindestanzahl der bisher erfolgten Aufrufe
+   #                       (Artikel mit weniger Aufrufen werden nicht erfasst)
+   #   $clang_id           REX_VALUE[2], Artikel einer Sprache bzw. aller Sprachen,
    #                       >0:  nur Artikel dieser Sprache
    #                       <=0: Artikel aller Sprachen
    #
    $str='
-<h4 align="center">Alternative Nutzung des Moduls</h4>
-
-<div><u>a) Aktivierung der Aufrufzählung für diesen Artikel:</u></div>
 <div class="counter_indent">
-    Dazu muss das <b>Eingabefeld</b> &quot;Mindestanzahl&quot; (siehe unten) <b>leer</b> bleiben!</div>
-
-<div><br><u>b) Ausgabe einer Aufrufstatistik in Form einer Hitliste:</u></div>
+<b>Mindestanzahl von Aufrufen</b> (Artikel mit weniger Aufrufen werden nicht mit angezeigt):
 <div class="counter_indent">
-    Dazu muss das folgende Eingabefeld mit einer positiven Zahl ausgefüllt werden.
-    Die Zahl gibt die <b>Mindestanzahl von Aufrufen</b> an, ab der ein Artikel in
-    der Hitliste aufgeführt wird (Parameter zur Verkürzung der Liste).
-    <div class="counter_indent">
-        <input type="number" min="0" class="counter_right counter_inpwid"
-               name="REX_INPUT_VALUE[1]" value="'.$min.'"> &nbsp;
-        (Mindestanzahl von Aufrufen)</div></div>
+<input type="number" min="0" class="counter_right counter_inpwid"
+       name="REX_INPUT_VALUE[1]" value="'.$min.'"></div></div>
 ';
    $anz=rex_clang::count();
    if($anz>1):
      $str=$str.'<div class="counter_indent">
-    <div>Hitliste <b>getrennt nach Sprachen</b> oder <b>über alle Sprachen</b>?</div>';
+<div>Hitliste <b>getrennt nach Sprachen</b> oder <b>über alle Sprachen</b>?</div>';
      $cl=array();
      $cl[0]['id']  =0;
      $cl[0]['lang']='alle Sprachen';
@@ -286,20 +277,45 @@ public static function modul_inp($min,$clang_id) {
         $cl[$i]['lang']=rex_clang::get($i)->getName();
         endfor;
      $str=$str.'
-    <div class="counter_indent">
-        <select name="REX_INPUT_VALUE[2]">';
+<div class="counter_indent">
+<select name="REX_INPUT_VALUE[2]">';
      for($i=0;$i<count($cl);$i=$i+1)
         if($cl[$i]['id']==$clang_id):
           $str=$str.'
-            <option value="'.$i.'" selected>'.$cl[$i]['lang'].'</option>';
+    <option value="'.$i.'" selected>'.$cl[$i]['lang'].'</option>';
           else:
           $str=$str.'
-            <option value="'.$i.'">'.$cl[$i]['lang'].'</option>';
+    <option value="'.$i.'">'.$cl[$i]['lang'].'</option>';
           endif;          
      $str=$str.'
-        </select></div></div>
+</select></div></div>
 ';
      endif;
+   return $str;
+   }
+public static function modul_inp($min,$clang_id) {
+   #   Rueckgabe des PHP-Codes fuer den Input-Teil des Moduls.
+   #   $min                = REX_VALUE[1]: minimale Aufrufzahl,
+   #                       ab der ein Artikel in der Aufrufstatistik erscheint
+   #   $clang_id           = REX_VALUE[2]: Sprach-Id der auszugebenden Artikel
+   #                       >0:  nur Artikel dieser Sprache
+   #                       <=0: Artikel aller Sprachen
+   #   benutzte functions:
+   #      self::select_menue($min,$clang_id)
+   #
+   $str='
+<h4 align="center">Alternative Nutzung des Moduls</h4>
+
+<div><u>a) Aktivierung der Aufrufzählung für diesen Artikel:</u></div>
+<div class="counter_indent">
+Dazu muss das <b>Eingabefeld</b> &quot;Mindestanzahl&quot; (siehe unten) <b>leer</b> bleiben!</div>
+
+<div><br><u>b) Ausgabe einer Aufrufstatistik in Form einer Hitliste:</u></div>
+<div class="counter_indent">
+Dazu muss das folgende Eingabefeld mit einer positiven Zahl ausgefüllt werden.</div>';
+   #
+   # --- Menue zur Gestaltung der Aufruf-Hitliste
+   $str=$str.self::select_menue($min,$clang_id);
    return $str;
    }
 public static function modul_outp($min,$clang_id) {
@@ -352,70 +368,42 @@ public static function modul_outp($min,$clang_id) {
    return $str;
    }
 public static function counter_page() {
+   #   Ausgabe der Aufruf-Hitliste im Backend.
+   #   benutzte functions:
+   #      self::select_menue($min,$clang_id)
+   #      self::counter_out($min,$clang_id)
    #
    # --- gesendete Daten auslesen
    $min=1;
-   if(isset($_POST['minimum'])) $min=$_POST['minimum'];
+   if(isset($_POST['REX_INPUT_VALUE'][1])) $min     =$_POST['REX_INPUT_VALUE'][1];
    $clang_id=0;
-   if(isset($_POST['sprache'])) $clang_id=$_POST['sprache'];
+   if(isset($_POST['REX_INPUT_VALUE'][2])) $clang_id=$_POST['REX_INPUT_VALUE'][2];
    #
-   # --- Mindestanzahl von Aufrufen
    $str='
-<h4 align="center">Ausgabe einer Aufrufstatistik in Form einer Hitliste</h4>
+<h4 align="center">Ausgabe der Aufrufstatistik in Form einer Hitliste</h4>
 
-<form method="post">
-<div><br><b>Mindestanzahl von Aufrufen</b> (Artikel mit weniger Aufrufen werden nicht mit angezeigt):</div>
-<div class="counter_indent">
-    <input type="number" min="1" class="counter_right counter_inpwid"
-           name="minimum" value="'.$min.'"></div>
-';
+<form method="post"><br>';
    #
-   # --- Sprache
-   $anz=rex_clang::count();
-   if($anz>1):
-     $str=$str.'<div><br>Hitliste <b>getrennt nach Sprachen</b> oder <b>über alle Sprachen</b>?</div>';
-     $cl=array();
-     $cl[0]['id']  =0;
-     $cl[0]['lang']='alle Sprachen';
-     for($i=1;$i<=$anz;$i=$i+1):
-        $cl[$i]['id']  =$i;
-        $cl[$i]['lang']=rex_clang::get($i)->getName();
-        endfor;
-     $str=$str.'
-    <div class="counter_indent">
-        <select name="sprache">';
-     for($i=0;$i<count($cl);$i=$i+1)
-        if($cl[$i]['id']==$clang_id):
-          $str=$str.'
-            <option value="'.$i.'" selected>'.$cl[$i]['lang'].'</option>';
-          else:
-          $str=$str.'
-            <option value="'.$i.'">'.$cl[$i]['lang'].'</option>';
-          endif;          
-     $str=$str.'
-        </select></div>
-';
-     endif;
+   # --- Menue zur Gestaltung der Aufruf-Hitliste
+   $str=$str.self::select_menue($min,$clang_id);
    #
    # --- Button
-   $str=$str.'<div><br>
+   $str=$str.'<div class="counter_indent"><br>
 <button class="btn btn-view">anzeigen</button>
-</form><br>
-&nbsp;</div>
+</form>
 ';
    #
    # --- Ausgabe
-   $str=$str.'<div align="center" class="counter_indent">
-    <div class="counter_box">'.
-        self::counter_out($min,$clang_id).'<br>
-    &nbsp;</div></div>';
+   $str=$str.'<div class="counter_indent" align="center"><br>
+<div class="counter_indent counter_box">
+'.self::counter_out($min,$clang_id).'</div></div>';
    echo $str;
    }
 #
 # -------------------- Installation
 public static function insert_counter_column() {
    #   Einfuegen der Aufrufzaehler-Spalte in rex_article, falls diese
-   #   noch nicht vorhanden ist.
+   #   noch nicht vorhanden ist (aufgerufen in install.php).
    #
    $table='rex_article';
    $cols=rex_sql::showColumns($table,$DBID=1);
@@ -428,15 +416,15 @@ public static function insert_counter_column() {
      $sql->setQuery($alter);
      endif;
    }
-public static function define_module($mypackage) {
+public static function define_module($package) {
    #   Rueckgabe der Quelle des Aufrufzaehler-Moduls in Form eines
    #   assoziativen Arrays:
    #      $mod['name']     Titel/Name des Moduls
    #      $mod['input']    Input-Teil des Moduls
    #      $mod['output']   Output-Teil des Moduls
-   #   $mypackage          Name des AddOns
+   #   $package            Name des AddOns
    #
-   $name='Aufrufzähler ('.$mypackage.')';
+   $name='Aufrufzähler ('.$package.')';
    $in='<?php
 $min     =REX_VALUE[1];
 $clang_id=REX_VALUE[2];
@@ -449,14 +437,15 @@ echo page_counter::modul_outp($min,$clang_id);
 ?>';
    return array('name'=>$name, 'input'=>$in, 'output'=>$out);
    }
-public static function build_module($mypackage) {
-   #   Erzeugen bzw. Aktualisieren eines Moduls in der Tabelle rex_module.
-   #   $mypackage          Name des AddOns
+public static function build_module($package) {
+   #   Erzeugen bzw. Aktualisieren eines Moduls in der Tabelle rex_module
+   #   (aufgerufen in install.php).
+   #   $package            Name des AddOns
    #   benutzte functions:
-   #      self::define_module($mypackage)
+   #      self::define_module($package)
    #
    # --- Modul-Quelle: name input, output
-   $modul=self::define_module($mypackage);
+   $modul=self::define_module($package);
    $name  =$modul['name'];
    $input =$modul['input'];
    $output=$modul['output'];
@@ -464,7 +453,7 @@ public static function build_module($mypackage) {
    # --- existiert der Modul schon?
    $sql=rex_sql::factory();
    $table='rex_module';
-   $query='SELECT * FROM '.$table.' WHERE name LIKE \'%'.$mypackage.'%\'';
+   $query='SELECT * FROM '.$table.' WHERE name LIKE \'%'.$package.'%\'';
    $mod=$sql->getArray($query);
    if(!empty($mod)):
      #     existiert schon: update (name bleibt unveraendert)
